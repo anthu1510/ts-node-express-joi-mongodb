@@ -3,14 +3,30 @@
  * Do not modify this file manually
  */
 
-export interface User {
+export interface IAddUser {
   /**
    * @example raja@gmail.com
    */
   email: string;
   /**
-   * @example 63a71adfe4ac51511d9e918f
+   * @example Raja
    */
+  name: string;
+  /**
+   * @example welcome@123
+   */
+  password: string;
+  /**
+   * @example welcome@123
+   */
+  status?: 'active' | 'inactive';
+}
+
+export interface IUser {
+  /**
+   * @example raja@gmail.com
+   */
+  email: string;
   id: string;
   /**
    * @example Raja

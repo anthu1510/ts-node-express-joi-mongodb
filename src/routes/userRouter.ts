@@ -1,5 +1,8 @@
 import { Router } from "express";
+import { IAddUser, IUser } from "../@types";
 import { userModel } from "../models/userModel";
+import { validate } from "express-validation";
+import { addUserValidation } from "../validations/userValidation";
 
 const router = Router();
 
@@ -7,8 +10,8 @@ router.get("/", (req, res) => {
   res.send("sample");
 });
 
-router.post("/", async (req, res) => {
-  const { name, email, password } = req.body;
+router.post("/", validate(addUserValidation), async (req, res) => {
+  const { name, email, password }: IAddUser = req.body;
   const user = new userModel({
     name,
     email,

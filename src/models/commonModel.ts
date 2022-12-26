@@ -1,12 +1,15 @@
-import Mongoose from "mongoose";
+import Mongoose, { Schema, Document } from "mongoose";
 import joiToJson from "joi-to-json";
-import { ObjectSchema } from "joi";
+import Joi from "joi";
 
 class CommonModel {
-  getModel<T extends ObjectSchema>(schema: T, modelName: string) {
-    const joiUserSchema = joiToJson(schema).properties;
+  getModel<I>(schema: Joi.Schema, modelName: string) {
+    const joiSchema: DocumentType = joiToJson(schema).properties;
 
-    const schemaObj = new Mongoose.Schema(joiUserSchema);
+    const schemaObj: Schema = new Mongoose.Schema<I>(joiSchema, {
+      versionKey: false,
+      timestamps: true,
+    });
 
     schemaObj.set("toJSON", {
       transform: function (doc, ret, options) {
@@ -16,7 +19,7 @@ class CommonModel {
       },
     });
 
-    return Mongoose.model(modelName, schemaObj);
+    return Mongoose.model<I>(modelName, schemaObj);
   }
 }
 
