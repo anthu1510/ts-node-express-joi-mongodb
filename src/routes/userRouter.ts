@@ -10,16 +10,20 @@ router.get("/", (req, res) => {
   res.send("sample");
 });
 
-router.post("/", validate(addUserValidation), async (req, res) => {
-  const { name, email, password }: IAddUser = req.body;
-  const user = new userModel({
-    name,
-    email,
-    password,
-  });
+router.post("/", validate(addUserValidation), async (req, res, next) => {
+  try {
+    const { name, email, password }: IAddUser = req.body;
+    const user = new userModel({
+      name,
+      email,
+      password,
+    });
 
-  const result = await user.save();
-  res.send(result);
+    const result = await user.save();
+    res.send(result);
+  } catch (err) {
+    next(err);
+  }
 });
 
 export default router;

@@ -14,20 +14,22 @@ app.use(express.urlencoded({ extended: false }));
 // route file
 routes(app);
 
+mongoose.connect(String(config.mongoDbUrl));
+
 const ErrorHandler: ErrorRequestHandler = (err, _, res, next) => {
   if (err instanceof ValidationError) {
     return res.status(err.statusCode).json(err);
   }
 
-  if (err.name === "MongoError") {
-    return res.status(err.statusCode).json(err);
-  }
-
-  return res.status(500).json(err);
+  return res.status(res.statusCode).json({
+    statusCode: res.statusCode,
+    error: err.name,
+    errorCode: err.code,
+    message: err.message,
+  });
   next();
 };
 
-mongoose.connect(String(config.mongoDbUrl));
 app.use(ErrorHandler);
 
 app.listen(config.port, () =>
