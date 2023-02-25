@@ -27,6 +27,9 @@ export interface IUser {
    * @example raja@gmail.com
    */
   email: string;
+  /**
+   * @example 63f9ba82a4f3093d9b4a5c0e
+   */
   id: string;
   /**
    * @example Raja
